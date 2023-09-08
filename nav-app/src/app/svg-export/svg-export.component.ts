@@ -52,6 +52,7 @@ export class SvgExportComponent implements OnInit {
     public hasScores: boolean;
     private svgElementID: string = "svgInsert_tmp";
     private buildSVGDebounce: boolean = false;
+    public visible: boolean = false;
 
     // counter for unit change ui element
     public unitEnum: number = 0;
@@ -430,14 +431,28 @@ export class SvgExportComponent implements OnInit {
         // set technique and sub-technique groups to the same font size
         if (this.config.autofitTextSize) {
             this.config.fontSize = minFontSize.toFixed(2)
+            this.visible = false;
         }
         if (this.config.autofitTextSize) {
             techniqueGroups.select("text").attr("font-size", minFontSize)
             subtechniqueGroups.select("text").attr("font-size", minFontSize)
+            this.visible = false;
         }
-        else {
+        else if (this.config.fontSize - minFontSize < 0){
+            techniqueGroups.select("text").attr("font-size", minFontSize)
+            subtechniqueGroups.select("text").attr("font-size", minFontSize)
+        }
+        else if (this.config.fontSize - minFontSize <= 2) {
+            console.log(this.config.fontSize - minFontSize);
             techniqueGroups.select("text").attr("font-size", this.config.fontSize)
             subtechniqueGroups.select("text").attr("font-size", this.config.fontSize)
+            this.visible = false;
+        }
+        else {
+            this.config.fontSize = minFontSize.toFixed(2);
+            this.visible = true;
+            techniqueGroups.select("text").attr("font-size", minFontSize)
+            subtechniqueGroups.select("text").attr("font-size", minFontSize)
         }
 
         // track the smallest optimal font size for tactics
@@ -716,7 +731,7 @@ export class SvgExportComponent implements OnInit {
      * @returns the largest possible font size
      */
     private findSize(self: any, words: string[], width: number, height: number, center: boolean, maxFontSize: number = 12): number {
-        let padding = 4;
+        let padding = 2;
 
         // break into multiple lines
         let distance = Math.min(height, (maxFontSize + 3) * words.length)

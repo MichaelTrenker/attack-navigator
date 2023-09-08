@@ -135,6 +135,10 @@
                                        [(ngModel)]="config.fontSize"
                                        (input)="buildSVG()" />
                             </mat-form-field>
+                            <ng-container *ngIf="visible">
+                                <div class="font-size-warning">Cannot increase font-size further</div>
+                            </ng-container>
+                            
                         </li>
                     </ul>
                 </div>
