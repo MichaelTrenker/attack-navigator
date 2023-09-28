@@ -7,7 +7,7 @@
                 {   
                     "name": "Enterprise",
                     "identifier": "enterprise-attack",
-                    "data": ["https://raw.githubusercontent.com/mitre/cti/ATT%26CK-v13.1/enterprise-attack/enterprise-attack.json"]
+                    "data": ["assets/enterprise-attack.json"]
                 },
                 {   
                     "name": "Mobile",
